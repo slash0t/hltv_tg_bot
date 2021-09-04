@@ -34,7 +34,7 @@ async def publish_news(sleep_time):
         news_message_text = f'<b>{article.title}</b>\n' \
                             f'{info_text}\n\n' \
                             f'{fragment_text}' \
-                            f'<em>by {article.author}, at {date_text}</em>\n'
+                            f'<em>by {article.author}, at {date_text}</em>'
 
         await bot.send_message(CHANNEL_ID,
                                news_message_text,

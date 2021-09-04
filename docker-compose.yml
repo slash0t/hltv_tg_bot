@@ -1,0 +1,58 @@
+version: '3.1'
+
+services:
+  db:
+    container_name: database_parse_bot
+    image: postgres
+    env_file:
+      - ".env"
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${DATABASE}
+    restart: always
+    ports:
+      - 5432:5432
+    networks:
+      - botnet
+    volumes:
+      - ./postgres:/var/lib/postgresql
+
+  adminer:
+    container_name: adminer_parse_bot
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  redis:
+    container_name: redis_parse_bot
+    image: redis
+    command: redis-server
+    ports:
+      - 6379:6379
+    networks:
+      - botnet
+    restart: always
+    volumes:
+      - .:/src
+
+  tgbot:
+    container_name: tg_bot_parse_bot
+    build:
+      context: .
+    command: python3 app.py
+    networks:
+      - botnet
+    restart: always
+    env_file:
+      - ".env"
+    volumes:
+      - .:/src
+    depends_on:
+      - db
+      - redis
+
+networks:
+  botnet:
+    driver: bridge

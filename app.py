@@ -1,7 +1,6 @@
 from aiogram import executor
 
 from loader import dp
-import middlewares, filters, handlers
 from utils.news_parser.news_publisher import start_news_publishing
 from utils.notify_admins import on_startup_notify
 from utils.set_bot_commands import set_default_commands
